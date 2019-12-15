@@ -5,9 +5,8 @@ Created on Sun May  5 12:05:32 2019
 @author: ashima
 """
 
-from tensorflow.examples.tutorials.mnist import input_data
 import config
-
+from tensorflow.examples.tutorials.mnist import input_data
 
 class DATA():
 
