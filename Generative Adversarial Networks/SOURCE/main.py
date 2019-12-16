@@ -19,11 +19,25 @@ if __name__ == "__main__":
     #BUILD MODEL
     model = model.MODEL()
     print("Model Initialized")
-    model.build()
-    print("Model Built")
+    
+    #BUILD GENERATOR MODEL
+    with tf.variable_scope("generator") as scope:
+        gen_out = model.Generator(model.gen_input)
+    
+    print("Generator Model Built")
+        
+    #BUILD DISCRIMINATOR MODEL
+    with tf.variable_scope("discriminator") as scope:
+        model.dis_output1 = model.Discriminator(model.dis_input)
+        scope.reuse_variables()
+        model.dis_output2 = model.Discriminator(gen_out)
+        
+    print("Discriminator Model Built")
+    
     #TRAIN MODEL
     model.train(train_data)
     print("Model trained")
+    
     #TEST MODEL
     #READ TEST DATA
     test_data = data.DATA(config.TEST_DIR)
