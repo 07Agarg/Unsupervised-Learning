@@ -22,10 +22,12 @@ class Generator_Layer(Layer):
         super(Generator_Layer, self).__init__(shape, name, stddev, value)
     
     def feed_forward_lrelu(self, input_data):
-        pass
+        output = tf.nn.leaky_relu(tf.add(tf.matmul(input_data, self.weights), self.biases))
+        return output
     
     def feed_forward_tanh(self, input_data):
-        pass
+        output = tf.nn.tanh(tf.add(tf.matmul(input_data, self.weights), self.biases))
+        return output
     
 class Discriminator_Layer(Layer):
     
@@ -33,10 +35,12 @@ class Discriminator_Layer(Layer):
         super(Discriminator_Layer).__init__(shape, name, stddev, value)
     
     def feed_forward_1(self, input_data):
-        pass
-    
+        output = tf.nn.dropout(tf.nn.leaky_relu(tf.add(tf.matmul(input_data, self.weights), self.biases)), )
+        return output
+        
     def feed_forward_2(self, input_data):
-        pass
+        output = tf.nn.sigmoid(tf.add(tf.matmul(input_data, self.weights), self.biased))
+        return output
     
     
 """    
@@ -47,9 +51,7 @@ class Discriminator_Layer(Layer):
     def feed_forward(self, input_):
         output_ = tf.nn.relu(tf.add(tf.matmul(input_, self.weight), self.bias))
         return output_
-
-
- 
+        
 class Outer_Layer:
     
     def __init__(self, shape, name):
@@ -60,9 +62,4 @@ class Outer_Layer:
     def feed_forward(self, input_):
         output_ = tf.add(tf.matmul(input_, self.weight), self.bias)
         return output_
-
 """
-
-
-
-    
