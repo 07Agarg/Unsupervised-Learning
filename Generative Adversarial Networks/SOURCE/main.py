@@ -10,6 +10,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = 1
 import data
 import model
 import config
+import tensorflow as tf
 
 
 if __name__ == "__main__":

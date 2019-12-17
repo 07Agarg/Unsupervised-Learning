@@ -14,10 +14,12 @@ class MODEL():
     
     def __init__(self):
         self.gen_input = tf.placeholder(shape = [None, 100], dtype = tf.float32)
-        self.dis_input = tf.placeholder(shape = [None, config.IMAGE_SIZE], dtype = tf.float32)    
-        self.dis_output1 = None
-        self.dis_output2 = None
-        self.loss = None
+        self.dis_input = tf.placeholder(shape = [None, config.IMAGE_SIZE], dtype = tf.float32) 
+        
+        self.dis_output1 = None            #D(x)
+        self.dis_output2 = None            #D(G(z))
+        self.gen_loss = None
+        self.dis_loss = None
         self.save_path = None
     
     def Generator(self, Z):
@@ -50,35 +52,43 @@ class MODEL():
         hidden4 = neural_network.Discriminator_Layer(shape = [256, 1], name = "dis_4", stddev = 0.01, value = 0.1)
         h4 = hidden4.feed_forward_2(h3)
         
-        return h4
-        
+        return h4  
     
     def loss_fun(self, margin = 5.0):
-        labels = self.labels
-        C = tf.constant(margin, name = "C")
-        eucd2 = tf.pow(tf.subtract(self.output_1, self.output_2), 2)
-        eucd_pos = tf.reduce_sum(eucd2, 1, name = "eucd_pos")
-        eucd = tf.sqrt(eucd_pos + 1e-6, name = "eucd")
-        eucd_neg = tf.pow(tf.maximum(tf.subtract(C, eucd), 0), 2, name = "eucd_neg")
-        loss_pos = tf.multiply(labels, eucd_pos, name = "pos_contrastive_loss")
-        loss_neg = tf.multiply(tf.subtract(1.0, labels), eucd_neg, name = "neg_conrastive_loss")
-        loss = tf.reduce_mean(tf.add(loss_pos, loss_neg), name = "contrastive_loss")
-        return loss
+        eps = 1e-2
+        self.dis_loss = tf.reduce_mean(-tf.log(self.dis_output1 + eps) - tf.log(1 - self.dis_output2+eps))
+        self.gen_loss = tf.reduce_mean(-tf.log(self.dis_output2+eps))
     
     def train(self, data):
-        self.loss = self.loss_fun()
-        optimizer = tf.train.GradientDescentOptimizer(config.LEARNING_RATE).minimize(self.loss)
+        self.loss_fun()
+        t_vars = tf.trainable_variables()
+        gen_vars = [var for var in t_vars if "generator" in var.name]
+        dis_vars = [var for var in t_vars if "discriminator" in var.name]
+        
+        gen_optimizer = tf.train.AdamOptimizer(config.LEARNING_RATE).minimize(self.gen_loss, var_list = gen_vars)
+        dis_optimizer = tf.train.AdamOptimizer(config.LEARNING_RATE).minimize(self.dis_loss, var_list = dis_vars)
+        
         saver = tf.train.Saver()
         with tf.Session() as session:
             init = tf.global_variables_initializer()
             session.run(init)
             print("Variables initialized.... ")
             for epoch in range(config.NUM_EPOCHS):
-                batch_X1, batch_X2, batch_label = data.generate_train_batch()
-                feed_dict = {self.inputs_1: batch_X1, self.inputs_2: batch_X2, self.labels: batch_label}
-                loss_val, _ = session.run([self.loss, optimizer], feed_dict = feed_dict)
+                G_loss = 0
+                D_loss = 0
+                for batch in range(int(data.size/config.BATCH_SIZE)):
+                    batchX, batchY = data.generate_train_batch()
+                    z = np.random.normal(0, 1, (config.BATCH_SIZE, 100))
+                    #discriminator step
+                    feed_dict = {self.dis_input: batchX, self.gen_input = z}
+                    dis_loss_, _ = session.run([self.dis_loss, dis_optimizer], feed_dict = feed_dict)
+                    
+                    #generator step
+                    feed_dict = {self.gen_input: z}
+                    gen_loss_, _ = session.run([self.gen_loss, gen_optimizer], feed_dict = feed_dict)
+                    
                 if epoch % 500 == 0:
-                    print('Epoch: %d Loss: %.3f' % (epoch, loss_val))
+                    print('Epoch: %d Loss: %.3f' % (epoch, gen_loss_, dis_loss_))
             self.save_path = saver.save(session, os.path.join(config.MODEL_DIR, "model" + str(config.BATCH_SIZE) + "_" + str(config.NUM_EPOCHS) + ".ckpt"))    
             print("Model saved in path: %s " % self.save_path)
             

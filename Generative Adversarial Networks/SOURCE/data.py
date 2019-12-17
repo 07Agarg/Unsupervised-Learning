@@ -23,7 +23,5 @@ class DATA():
         return test_data_x, test_data_y
         
     def generate_train_batch(self):
-        input_1, label_1 = self.dataset.train.next_batch(config.BATCH_SIZE)
-        input_2, label_2 = self.dataset.train.next_batch(config.BATCH_SIZE)
-        label = (label_1 == label_2).astype('float32')
-        return input_1, input_2, label
+        input_, label= self.dataset.train.next_batch(config.BATCH_SIZE)
+        return input_, label
