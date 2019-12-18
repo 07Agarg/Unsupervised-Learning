@@ -25,4 +25,5 @@ class DATA():
         
     def generate_train_batch(self):
         input_, label= self.dataset.train.next_batch(config.BATCH_SIZE)
+        input_ = (input_ - 0.5)/0.5
         return input_, label

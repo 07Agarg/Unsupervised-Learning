@@ -6,7 +6,7 @@ Created on Sat May  4 05:15:18 2019
 """
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import data
 import model
 import config
@@ -19,6 +19,7 @@ if __name__ == "__main__":
     train_data.read()
     print("Train Data Loaded")
     #BUILD MODEL
+    tf.reset_default_graph()
     model = model.MODEL()
     print("Model Initialized")
     
@@ -37,12 +38,6 @@ if __name__ == "__main__":
     print("Discriminator Model Built")
     
     #TRAIN MODEL
-    model.train(train_data)
+    #gen_vars, dis_vars = model.train(train_data)
+    model.train(train_data, gen_out)
     print("Model trained")
-    
-    # #TEST MODEL
-    # #READ TEST DATA
-    # test_data = data.DATA(config.TEST_DIR)
-    # print("Test Data Loaded")
-    # model.test(test_data)
-    # print("Model Tested")
