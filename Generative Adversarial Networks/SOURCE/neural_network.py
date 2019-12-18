@@ -32,14 +32,14 @@ class Generator_Layer(Layer):
 class Discriminator_Layer(Layer):
     
     def __init__(self, shape, name, stddev, value):
-        super(Discriminator_Layer).__init__(shape, name, stddev, value)
+        super(Discriminator_Layer, self).__init__(shape, name, stddev, value)
     
     def feed_forward_1(self, input_data):
-        output = tf.nn.dropout(tf.nn.leaky_relu(tf.add(tf.matmul(input_data, self.weights), self.biases)), )
+        output = tf.nn.dropout(tf.nn.leaky_relu(tf.add(tf.matmul(input_data, self.weights), self.biases)), keep_prob=0.3)
         return output
         
     def feed_forward_2(self, input_data):
-        output = tf.nn.sigmoid(tf.add(tf.matmul(input_data, self.weights), self.biased))
+        output = tf.nn.sigmoid(tf.add(tf.matmul(input_data, self.weights), self.biases))
         return output
     
     

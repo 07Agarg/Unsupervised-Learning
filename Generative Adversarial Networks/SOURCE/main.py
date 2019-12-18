@@ -6,7 +6,7 @@ Created on Sat May  4 05:15:18 2019
 """
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = 1
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 import data
 import model
 import config
@@ -15,7 +15,8 @@ import tensorflow as tf
 
 if __name__ == "__main__":
     #READ DATA
-    train_data = data.DATA(config.TRAIN_DIR)
+    train_data = data.DATA()
+    train_data.read()
     print("Train Data Loaded")
     #BUILD MODEL
     model = model.MODEL()
@@ -39,9 +40,9 @@ if __name__ == "__main__":
     model.train(train_data)
     print("Model trained")
     
-    #TEST MODEL
-    #READ TEST DATA
-    test_data = data.DATA(config.TEST_DIR)
-    print("Test Data Loaded")
-    model.test(test_data)
-    print("Model Tested")
+    # #TEST MODEL
+    # #READ TEST DATA
+    # test_data = data.DATA(config.TEST_DIR)
+    # print("Test Data Loaded")
+    # model.test(test_data)
+    # print("Model Tested")

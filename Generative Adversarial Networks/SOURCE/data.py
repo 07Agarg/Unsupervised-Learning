@@ -11,11 +11,12 @@ from tensorflow.examples.tutorials.mnist import input_data
 class DATA():
 
     def __init__(self):
-        self.data_index = 0
-        self.dataset = None
-
+        self.size = 0
+        
     def read(self):
         self.dataset = input_data.read_data_sets(config.DATA_DIR, one_hot = False)
+        self.size = len(self.dataset.train.images)
+        print(self.size)
         
     def read_test(self):
         test_data_x = self.dataset.test.images

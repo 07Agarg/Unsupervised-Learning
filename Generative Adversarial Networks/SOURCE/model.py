@@ -6,16 +6,16 @@ Created on Sat May  4 05:15:20 2019
 """
 
 import os
-import tensorflow as tf
 import config
+import numpy as np
 import neural_network
+import tensorflow as tf
 
 class MODEL():
     
     def __init__(self):
         self.gen_input = tf.placeholder(shape = [None, 100], dtype = tf.float32)
         self.dis_input = tf.placeholder(shape = [None, config.IMAGE_SIZE], dtype = tf.float32) 
-        
         self.dis_output1 = None            #D(x)
         self.dis_output2 = None            #D(G(z))
         self.gen_loss = None
@@ -80,7 +80,7 @@ class MODEL():
                     batchX, batchY = data.generate_train_batch()
                     z = np.random.normal(0, 1, (config.BATCH_SIZE, 100))
                     #discriminator step
-                    feed_dict = {self.dis_input: batchX, self.gen_input = z}
+                    feed_dict = {self.dis_input: batchX, self.gen_input: z}
                     dis_loss_, _ = session.run([self.dis_loss, dis_optimizer], feed_dict = feed_dict)
                     
                     #generator step
@@ -88,7 +88,7 @@ class MODEL():
                     gen_loss_, _ = session.run([self.gen_loss, gen_optimizer], feed_dict = feed_dict)
                     
                 if epoch % 500 == 0:
-                    print('Epoch: %d Loss: %.3f' % (epoch, gen_loss_, dis_loss_))
+                    print('Epoch: %d,  Generator Loss: %.3f,  Discriminator Loss: %.3f' % (epoch, gen_loss_, dis_loss_))
             self.save_path = saver.save(session, os.path.join(config.MODEL_DIR, "model" + str(config.BATCH_SIZE) + "_" + str(config.NUM_EPOCHS) + ".ckpt"))    
             print("Model saved in path: %s " % self.save_path)
             
