@@ -31,13 +31,15 @@ if __name__ == "__main__":
         
     #BUILD DISCRIMINATOR MODEL
     with tf.variable_scope("discriminator") as scope:
-        model.dis_output1 = model.Discriminator(model.dis_input)
+        model.dis_output1 = model.Discriminator(model.dis_input, model.dropout)
         scope.reuse_variables()
-        model.dis_output2 = model.Discriminator(gen_out)
+        model.dis_output2 = model.Discriminator(gen_out, model.dropout)
         
     print("Discriminator Model Built")
     
     #TRAIN MODEL
-    #gen_vars, dis_vars = model.train(train_data)
     model.train(train_data, gen_out)
     print("Model trained")
+    
+    #TEST MODEL
+    #model.test(gen_out)
