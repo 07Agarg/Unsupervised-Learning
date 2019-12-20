@@ -41,7 +41,7 @@ The dataset is available in both Tensorflow and PyTorch. Tensorflow loads the da
 - Weight Initialization: Random normal initialization using mean as 0 and standard deviation(stddev) as 0.02.
 - Bias Initialization: Constant value of 0.
 
-### DEVELOPMENT ENVIRONMENT:
+### DEVELOPMENT ENVIRONMENT AND INSTALLATION STEPS:
 The repository contains both PYTORCH and TENSORFLOW models . <br />
 - Windows 10
 - GeForceRTX 2060
@@ -50,6 +50,10 @@ The repository contains both PYTORCH and TENSORFLOW models . <br />
 - Install python=3.6 <br />
 ```
 conda create -n env_name python=3.6 numpy=1.13.3 scipy
+```
+- Activate Environment <br />
+```
+activate env_name
 ```
 For Tensorflow model, install
 - Tensorflow 1.9.0
