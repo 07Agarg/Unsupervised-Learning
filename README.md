@@ -1,6 +1,6 @@
 # Unsupervised-Learning
 
-This repository contains upsupervised learning model GANS for MNIST DATASET.
+This repository contains unsupervised learning model GANS for MNIST DATASET.
 
 ### DATASET:
 This network is tested on simplest MNIST DATASET, a large database of handwritten digits that is commonly used for training various image processing systems. It contains 60,000 training images and 10,000 testing images.
