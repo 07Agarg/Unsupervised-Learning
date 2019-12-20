@@ -21,13 +21,13 @@ The dataset is available in both Tensorflow and PyTorch. Tensorflow loads the da
 #### Discriminator Network: 
 - Fully-connected Layer1: [784, 1024] <br />
 - Leaky ReLu
-- Dropout (keep_probs = 0.3)
+- Dropout (keep_probs: 0.3)
 - Fully-connected Layer2: [1024, 512] 
 - Leaky ReLu 
-- Dropout (keep_probs = 0.3)
+- Dropout (keep_probs: 0.3)
 - Fully-connected Layer3: [512, 256]
 - Leaky ReLu
-- Dropout (keep_probs = 0.3)
+- Dropout (keep_probs: 0.3)
 - Fully-connected Layer4: [256, 1]
 - Sigmoid
 
