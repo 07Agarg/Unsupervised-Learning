@@ -63,13 +63,13 @@ conda install pytorch torchvision cudatoolkit=10.1 -c pytorch
 ```
 
 ### RESULT:
-Tensorflow:
+#### Tensorflow:
 
 ![Tensorflow Loss Curve](https://github.com/07Agarg/Unsupervised-Learning/blob/master/Generative%20Adversarial%20Networks/Tensorflow/RESULT/Best%20Results%20Using%20LeakyRelu%2C%20beta1(0.5)/LossCurve.jpg)
 ![Tensorflow Output Image](https://github.com/07Agarg/Unsupervised-Learning/blob/master/Generative%20Adversarial%20Networks/Tensorflow/RESULT/Best%20Results%20Using%20LeakyRelu%2C%20beta1(0.5)/Generated_Images_GANS_99.jpg)
 
 
-PyTorch:
+#### PyTorch:
 
 ![PyTorch Loss Curve](https://github.com/07Agarg/Unsupervised-Learning/blob/master/Generative%20Adversarial%20Networks/PyTorch/RESULT/LossCurve.jpg)
 ![PyTorch Output Image](https://github.com/07Agarg/Unsupervised-Learning/blob/master/Generative%20Adversarial%20Networks/PyTorch/RESULT/Generated_Images_GANS_99.jpg)
