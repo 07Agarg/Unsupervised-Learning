@@ -28,7 +28,7 @@ class Generator_Model(nn.Module):
         out = nn.functional.leaky_relu(self.hidden2(out), negative_slope = 0.2, inplace = False)
         out = nn.functional.leaky_relu(self.hidden3(out), negative_slope = 0.2, inplace = False)
         out = nn.functional.tanh(self.hidden4(out))
-        return out
+        return out.cuda()
 
 class Discriminator_Model(nn.Module):
     def __init__(self):
@@ -43,7 +43,7 @@ class Discriminator_Model(nn.Module):
         out = nn.functional.dropout(nn.functional.leaky_relu(self.hidden2(out), negative_slope = 0.2, inplace = False), p = 0.3)
         out = nn.functional.dropout(nn.functional.leaky_relu(self.hidden3(out), negative_slope = 0.2, inplace = False), p = 0.3)
         out = nn.functional.sigmoid(self.hidden4(out))
-        return out
+        return out.cuda()
 
 class Operators():
     def __init__(self, gen_net, dis_net):
@@ -54,6 +54,8 @@ class Operators():
         self.dis_optimizer = torch.optim.Adam(self.dis_net.parameters(), lr = config.LEARNING_RATE, betas = (0.5, 0.999))
         
     def train(self, data):
+        gen_losses = []
+        dis_losses = []
         for epoch in range(config.NUM_EPOCHS):
             G_losses = []
             D_losses = []
@@ -97,10 +99,10 @@ class Operators():
             dis_losses.append(np.mean(D_losses))
         
         self.save_path = os.path.join(config.MODEL_DIR, "model" + str(config.BATCH_SIZE) + "_" + str(config.NUM_EPOCHS) + ".pt")
-        torch.save(self.net, self.save_path)
+        torch.save(self.gen_net, self.save_path)
         print("Model saved in path: %s " % self.save_path)
         utils.plot(gen_losses, dis_losses)
-        self.test(gen_out)
+        self.test(epoch)
         
     def test(self, epoch):      
        z = Variable(torch.randn(config.TEST_SAMPLES, 100)).cuda()

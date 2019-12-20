@@ -30,7 +30,6 @@ class DATA():
         train_iter = iter(self.train_dataloader)
         input_, label_ = next(train_iter)
         input_ = input_.reshape(input_.size()[0], -1)
-        #print(input_.shape)
-        #print(type(input_))
+        input_ = (input_ - 0.5)/0.5
         return input_, label_
         
