@@ -18,7 +18,7 @@ class DATA():
         self.size = 0
 
     def read(self):
-        trans = transforms.Compose([transforms.ToTensor()])#, transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        trans = transforms.Compose([transforms.ToTensor()])         #, transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
         print(config.DATA_DIR)
         self.dataset = MNIST(root = config.DATA_DIR, train = True, transform = trans, download=True)
         self.train_dataloader = DataLoader(self.dataset, config.BATCH_SIZE, shuffle = True)
