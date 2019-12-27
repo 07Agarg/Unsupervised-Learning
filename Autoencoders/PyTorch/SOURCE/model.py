@@ -16,40 +16,6 @@ import matplotlib.pyplot as plt
 from torch.autograd import Variable
 
 
-class Autoencoder(nn.Module):
-    def __init__(self):
-        super(Autoencoder, self).__init__()
-        self.encoder = nn.Sequential(
-            nn.Linear(config.IMAGE_SIZE, 256), 
-            nn.ReLU(),
-            nn.Linear(256, 128), 
-            nn.ReLU(),
-            nn.Linear(128, 64), 
-            nn.ReLU(),
-            nn.Linear(64, 32), 
-            nn.ReLU(),
-            )
-        
-        self.decoder = nn.Sequential(
-            nn.Linear(32, 64), 
-            nn.ReLU(), 
-            nn.Linear(64, 128), 
-            nn.ReLU(),
-            nn.Linear(128, 256),
-            nn.ReLU(), 
-            nn.Linear(256, config.IMAGE_SIZE),
-            nn.ReLU(),
-            )
-        
-    def forward(self, x, train):
-        if train:
-            encoded = self.encoder(x)
-            decoded = self.decoder(encoded)
-        else:
-            decoded = self.decoder(x)
-        return decoded.cuda()
-    
-
 class Operators():
     def __init__(self, net):
         self.net = net
@@ -90,19 +56,27 @@ class Operators():
         
     def test(self, epoch):      
         #self.net.eval()
-       z = Variable(torch.randn(config.TEST_SAMPLES, 32)).cuda()
+       if config.DATASET == "MNIST":
+           z = Variable(torch.randn(config.TEST_SAMPLES, 16)).cuda()
+       elif config.DATASET == "CIFAR":
+           z = Variable(torch.randn(config.TEST_SAMPLES, 24, 8, 8)).cuda()
+           
        test_images = self.net(z, False).cpu().detach().numpy()
+       print("test images shape: ", np.shape(test_images))
        print("test images shape: ", len(test_images))
        grid_size = 5
        fig, ax = plt.subplots(grid_size, grid_size, figsize = (5, 5))
+       
        for i, j in itertools.product(range(grid_size), range(grid_size)):
            ax[i, j].get_xaxis().set_visible(False)
            ax[i, j].get_yaxis().set_visible(False)
+           
        for k in range(5*5):
             i = k // 5
             j = k % 5
             ax[i, j].cla()
-            ax[i, j].imshow(np.reshape(test_images[k], (28, 28)), cmap='gray')
+            img = np.transpose(test_images[k], (1, 2, 0))
+            ax[i, j].imshow(img)   #.astype('uint8'))
        label = 'Epoch {0}'.format(epoch)
        fig.text(0.5, 0.04, label, ha='center')
        plt.savefig(config.OUT_DIR + 'Generated_Images_GANS_'+str(epoch)+'.jpg')
