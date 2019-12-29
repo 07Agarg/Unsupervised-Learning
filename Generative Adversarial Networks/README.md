@@ -1,4 +1,4 @@
-# Unsupervised-Learning
+# Generative Adversarial Networks
 
 This repository contains unsupervised learning model GANS for MNIST DATASET.
 
