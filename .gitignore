@@ -113,14 +113,13 @@ dmypy.json
 # Pyre type checker
 .pyre/
 *.gz
-Autoencoders/PyTorch/DATASET/MNIST/raw/train-images-idx3-ubyte
-Autoencoders/PyTorch/DATASET/MNIST/raw/t10k-labels-idx1-ubyte
-Autoencoders/PyTorch/DATASET/MNIST/raw/t10k-images-idx3-ubyte
-Autoencoders/PyTorch/DATASET/MNIST/raw/train-labels-idx1-ubyte
-Autoencoders/PyTorch/DATASET/cifar-10-batches-py/data_batch_1
-Autoencoders/PyTorch/DATASET/cifar-10-batches-py/data_batch_3
-Autoencoders/PyTorch/DATASET/cifar-10-batches-py/data_batch_5
-Autoencoders/PyTorch/DATASET/cifar-10-batches-py/data_batch_2
-Autoencoders/PyTorch/DATASET/cifar-10-batches-py/data_batch_4
+Autoencoders/PyTorch/DATASET/*
 *.meta
-Autoencoders/PyTorch/DATASET/cifar-10-batches-py/test_batch
+Autoencoders/PyTorch/DATASET/*
+Autoencoders/PyTorch/SOURCE/data/*
+Variational Autoencoders/PyTorch/DATASET/*
+*jpg
+*png
+Autoencoders/PyTorch/SOURCE/runs/*
+*.pt
+Variational Autoencoders/PyTorch/SOURCE/runs/*
