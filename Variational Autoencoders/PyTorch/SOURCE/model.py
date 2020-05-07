@@ -75,7 +75,6 @@ class Operators():
             self.writer.add_scalar('bce_loss', np.mean(bce_epoch_loss), epoch)
 
             if epoch % 30 == 0 or epoch == 1:
-                print("In epoch 1")
                 utils.generate_images_helper(self.net, epoch)
                 utils.reconstruct_images_helper(test_data, self.net, epoch)
 
